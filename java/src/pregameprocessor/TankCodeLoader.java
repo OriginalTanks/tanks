@@ -6,6 +6,7 @@ import database.GameDatabaseImpl;
 import game.Game;
 import game.board.elements.CoreTank;
 import game.board.elements.Tank;
+import game.board.elements.TankImpl;
 import game.util.JavaSourceFromString;
 
 import org.bson.types.ObjectId;
@@ -166,16 +167,16 @@ public class TankCodeLoader {
                     System.err.format("Reflection failed");
                     game.setCompFailureResponse(e.getMessage());
                     e.printStackTrace();
-                    return null;
+                    return new TankImpl();
                 }
             } else {
                 System.err.format("Failed to compile class. Loc: %s%n", name);
-                return null;
+                return new TankImpl();
             }
         } catch (Exception e) {
         	game.setCompFailureResponse(e.getMessage());
             e.printStackTrace();
-            return null;
+            return new TankImpl();
         }
     }
     

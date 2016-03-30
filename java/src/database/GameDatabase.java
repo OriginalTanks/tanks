@@ -22,5 +22,6 @@ public interface GameDatabase {
 
     public DBUser findDBUserByTankId(ObjectId tankId);
     public DBTank loadDBTank(ObjectId tankId);
+    public List<DBTank> listTanks();
 
 }

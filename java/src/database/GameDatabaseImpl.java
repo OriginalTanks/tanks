@@ -105,6 +105,12 @@ public class GameDatabaseImpl implements GameDatabase {
         return null;
     }
 
+    @Override
+    public List<DBTank> listTanks(){
+
+        return null;
+    }
+
     public GamesDAO getGameDAO() {
         return gameDAO;
     }
