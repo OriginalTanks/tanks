@@ -18,7 +18,7 @@ public class DBTank {
     private ObjectId id;
     private String name;
     private String code;
-    private COMPILE_STATUS status;
+    private COMPILE_STATUS compile_status;
     private TANK_STATUS status;
     private TANK_TYPE type;
     private TANK_SKIN skin;
@@ -52,10 +52,10 @@ public class DBTank {
         this.code = code;
     }
 
-    public COMPILE_STATUS getStatus(){ return this.status; }
+    public COMPILE_STATUS getStatus(){ return this.compile_status; }
 
     public void setStatus(COMPILE_STATUS status){
-        this.status = status;
+        this.compile_status = status;
     }
 
     public enum COMPILE_STATUS{
