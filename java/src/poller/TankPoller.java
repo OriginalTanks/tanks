@@ -52,12 +52,13 @@ public class TankPoller implements Runnable{
             try {
                 for (DBTank tank : user.getTanks()) {
                     if (tank.getStatus() == DBTank.COMPILE_STATUS.UNCOMPILED || tank.getStatus() == null) {
-                        if (TankCodeLoader.loadTank(tank.getId(), "c" + TankPoller.num, null) != null) {
+                        if (TankCodeLoader.loadTank(tank.getId(), "c" + TankPoller.num, null).getError_message() == null) {
                             tank.setStatus(DBTank.COMPILE_STATUS.SUCCESS);
                             System.out.println("Successful");
                         } else {
                             tank.setStatus(DBTank.COMPILE_STATUS.FAIL);
-                            System.out.println("Failed");
+                            tank.setError_message(TankCodeLoader.loadTank(tank.getId(), "c" + TankPoller.num,null).getError_message());
+                            System.out.println("Failed " + tank.getError_message());
                         }
                     }
                 }

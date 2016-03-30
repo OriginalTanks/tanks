@@ -47,6 +47,7 @@ public abstract class Tank implements BoardElement , Comparable<Tank> {
 	private int gamesPlayed = 0;
 	//How are we storing tank images? I'm not really sure
 	private Image tankImage;
+	private String error_message;
 	
 	//Kind of shoehorning it, but to prevent them editing things they shouldn't
 	private String password = "poekillsKylo33#d@rn";
@@ -336,6 +337,14 @@ public abstract class Tank implements BoardElement , Comparable<Tank> {
 	@Override
 	public int compareTo(Tank o) {
 		return this.actionPoints - o.actionPoints;
+	}
+
+	public String getError_message(){
+		return error_message;
+	}
+
+	public void setError_message(String message){
+		this.error_message = message;
 	}
 }
 

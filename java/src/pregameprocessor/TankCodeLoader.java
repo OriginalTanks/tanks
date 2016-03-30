@@ -173,17 +173,23 @@ public class TankCodeLoader {
                     String cErr = "Compilation error! Reflection failed\nTank: " + name + "\n" + e.getMessage();
                     game.addCompErr(cErr);
                     System.err.println(cErr);
-                    return null;
+                    Tank t = new TankImpl();
+                    t.setError_message(e.getMessage());
+                    return t;
                 }
             } else {
                 String cErr = "Compilation error!\nTank: " + name;
                 System.err.println(cErr);
-                return null;
+                Tank t = new TankImpl();
+                t.setError_message("Compilation error");
+                return t;
             }
         } catch (Exception e) {
             String cErr = "Compilation error!\nTank: " + name + "\n" + e.getMessage();
             System.err.println(cErr);
-            return null;
+            Tank t = new TankImpl();
+            t.setError_message(e.getMessage());
+            return t;
         }
     }
     
