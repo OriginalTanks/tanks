@@ -96,13 +96,17 @@ public class TankCodeLoader {
             
             // 3) Remove all imports that aren't whitelisted
             if (containsUnapprovedImports(code)) {
-                game.setCompFailureResponse(ERR_BAD_IMPORTS);
+                String cErr = "Compilation error!\nTank: " + name + "\n" + ERR_BAD_IMPORTS;
+                game.addCompErr(cErr);
+                System.err.println(cErr);
                 return null;
             }
             
             // 4) Remove calls that can create threads
             if (containsThreadAndRunnableCalls(code)) {
-                game.setCompFailureResponse(ERR_THREADS_RUNNABLE);
+                String cErr = "Compilation error!\nTank: " + name + "\n" + ERR_THREADS_RUNNABLE;
+                game.addCompErr(cErr);
+                System.err.println(cErr);
                 return null;
             }
 
@@ -110,7 +114,9 @@ public class TankCodeLoader {
             //    This includes Runtime (allows system calls), System (allows file streams),
             //    and SecurityManager (could potentially brick our running program)
             if (containsOtherJavaLangProblems(code)) {
-                game.setCompFailureResponse(ERR_OTHERS);
+                String cErr = "Compilation error!\nTank: " + name + "\n" + ERR_OTHERS;
+                game.addCompErr(cErr);
+                System.err.println(cErr);
                 return null;
             }
 
@@ -164,19 +170,20 @@ public class TankCodeLoader {
                     Tank t = (Tank) ctor.newInstance(tankId, "My Tank");
                     return t;
                 } catch (Exception e) {
-                    System.err.format("Reflection failed");
-                    game.setCompFailureResponse(e.getMessage());
-                    e.printStackTrace();
-                    return new TankImpl();
+                    String cErr = "Compilation error! Reflection failed\nTank: " + name + "\n" + e.getMessage();
+                    game.addCompErr(cErr);
+                    System.err.println(cErr);
+                    return null;
                 }
             } else {
-                System.err.format("Failed to compile class. Loc: %s%n", name);
-                return new TankImpl();
+                String cErr = "Compilation error!\nTank: " + name;
+                System.err.println(cErr);
+                return null;
             }
         } catch (Exception e) {
-        	game.setCompFailureResponse(e.getMessage());
-            e.printStackTrace();
-            return new TankImpl();
+            String cErr = "Compilation error!\nTank: " + name + "\n" + e.getMessage();
+            System.err.println(cErr);
+            return null;
         }
     }
     

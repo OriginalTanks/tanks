@@ -1,7 +1,10 @@
 var Auth = require('./authentication.js')
 
-var boardWidth = 30 // (x)
-var boardHeight = 30 // (y)
+var boardWidth = 30; // (x)
+var boardHeight = 30; // (y)
+var gridSize = 21; // Size of a grid space (px)
+var ANIMATION_LENGTH = 100; // How long animations take
+var TURN_LENGTH = 100;
 
 var WatchGame = React.createClass({
     getInitialState: function() {
@@ -18,7 +21,6 @@ var WatchGame = React.createClass({
             game: {},
             tanksLeft: 4,
             lasers: [],
-            TURN_LENGTH: 350
         };
     },
     getWinner: function()
@@ -32,7 +34,7 @@ var WatchGame = React.createClass({
     },
     backToViewGames: function()
     {
-        this.props.history.pushState(null, '/your_games');
+        //this.props.history.pushState(null, '/your_games');
     },
     DisplayWinner: function()
     {
@@ -83,8 +85,10 @@ var WatchGame = React.createClass({
         var tempLasers = [];
         switch(this.state.tanks[tankNo].dir){
             case("S"):
-                for(var y = this.state.tanks[tankNo].coord.y+1; y < boardHeight; y++){
-                    if(!this.hasTank(this.state.tanks[tankNo].coord.x,y)){
+                for(var y = this.state.tanks[tankNo].coord.y+2; y < boardHeight; y++){
+                    if(!this.hasTank(this.state.tanks[tankNo].coord.x,y) &&
+                        !this.hasTank(this.state.tanks[tankNo].coord.x-1,y) &&
+                        !this.hasTank(this.state.tanks[tankNo].coord.x+1,y)){
                         tempLasers.push({"y" : true, "coord": {"x": this.state.tanks[tankNo].coord.x,"y": y}});
                     }
                     else{
@@ -94,12 +98,14 @@ var WatchGame = React.createClass({
                     this.setState({lasers: tempLasers});
                     setTimeout(function(){
                         this.setState({lasers: []})
-                        }.bind(this),this.state.TURN_LENGTH-50);
+                        }.bind(this),TURN_LENGTH-50);
                 }
             break;
             case("W"):
-                for(var x = this.state.tanks[tankNo].coord.x-1; x >= 0; x--){
-                    if(!this.hasTank(x,this.state.tanks[tankNo].coord.y)){
+                for(var x = this.state.tanks[tankNo].coord.x-2; x >= 0; x--){
+                    if(!this.hasTank(x,this.state.tanks[tankNo].coord.y) &&
+                        !this.hasTank(x,this.state.tanks[tankNo].coord.y-1) &&
+                        !this.hasTank(x,this.state.tanks[tankNo].coord.y+1)){
                         tempLasers.push({"x" : true, "coord": {"x": x,"y": this.state.tanks[tankNo].coord.y}});
                     }
                     else{
@@ -109,12 +115,14 @@ var WatchGame = React.createClass({
                     this.setState({lasers: tempLasers});
                     setTimeout(function(){
                             this.setState({lasers: []})
-                         }.bind(this),this.state.TURN_LENGTH-50);
+                         }.bind(this),TURN_LENGTH-50);
                 }
             break;
             case("N"):
-                for(var y = this.state.tanks[tankNo].coord.y-1; y >= 0; y--){
-                    if(!this.hasTank(this.state.tanks[tankNo].coord.x,y)){
+                for(var y = this.state.tanks[tankNo].coord.y-2; y >= 0; y--){
+                    if(!this.hasTank(this.state.tanks[tankNo].coord.x,y) &&
+                        !this.hasTank(this.state.tanks[tankNo].coord.x-1,y) &&
+                        !this.hasTank(this.state.tanks[tankNo].coord.x+1,y)){
                         tempLasers.push({"y" : true, "coord": {"x": this.state.tanks[tankNo].coord.x,"y": y}});
                     }
                     else{
@@ -125,12 +133,14 @@ var WatchGame = React.createClass({
                     this.setState({lasers: tempLasers});
                     setTimeout(function(){
                             this.setState({lasers: []})
-                         }.bind(this),this.state.TURN_LENGTH-50);
+                         }.bind(this),TURN_LENGTH-50);
                 }
             break;
             case("E"):
-                for(var x = this.state.tanks[tankNo].coord.x+1; x < boardWidth; x++){
-                    if(!this.hasTank(x,this.state.tanks[tankNo].coord.y)){
+                for(var x = this.state.tanks[tankNo].coord.x+2; x < boardWidth; x++){
+                    if(!this.hasTank(x,this.state.tanks[tankNo].coord.y) &&
+                        !this.hasTank(x,this.state.tanks[tankNo].coord.y-1) &&
+                        !this.hasTank(x,this.state.tanks[tankNo].coord.y+1)){
                         tempLasers.push({"x" : true, "coord": {"x": x,"y": this.state.tanks[tankNo].coord.y}});
                     }
                     else{
@@ -142,104 +152,132 @@ var WatchGame = React.createClass({
                 this.setState({lasers: tempLasers});
                 setTimeout(function(){
                             this.setState({lasers: []})
-                         }.bind(this),this.state.TURN_LENGTH-50);
+                         }.bind(this),TURN_LENGTH-50);
             break;
         }
     },
     StartGame: function()
      {
-            this.makeMove(0,0)
+            this.makeMove(0,0);
      },
+
+    // Handles one tank move
+    // Returns a promise that resolves when all the animations are done, returns args:
+    //     -animation duration
     tankMove: function(move, tankIndex) {
         switch(move){
             case("SHOOT"):
                 console.log("Shooting");
                 this.fire(tankIndex);
-                break;
+                return $.Deferred().resolve().promise();
             case("TURN_RIGHT"):
                 console.log("Turning right!");
                   switch(this.state.tanks[tankIndex].dir){
                       case("S"):
                         this.state.tanks[tankIndex].dir = "W";
                         this.forceUpdate();
-                      break;
+                      return $.Deferred().resolve().promise();
                       case("N"):
                         this.state.tanks[tankIndex].dir = "E";
                         this.forceUpdate();
-                      break
+                      return $.Deferred().resolve().promise();
                       case("W"):
                         this.state.tanks[tankIndex].dir = "N";
                         this.forceUpdate();
-                      break;
+                      return $.Deferred().resolve().promise();
                       case("E"):
                         this.state.tanks[tankIndex].dir = "S";
                         this.forceUpdate();
-                      break;
+                      return $.Deferred().resolve().promise();
                   }
-                break;
+                return $.Deferred().resolve().promise();
             case("TURN_LEFT"):
                 console.log("Turning left!");
                     switch(this.state.tanks[tankIndex].dir){
                         case("S"):
                             this.state.tanks[tankIndex].dir = "E";
                             this.forceUpdate();
-                        break;
+                        return $.Deferred().resolve().promise();
                         case("N"):
                             this.state.tanks[tankIndex].dir = "W";
                             this.forceUpdate();
-                        break
+                        return $.Deferred().resolve().promise();
                         case("W"):
                             this.state.tanks[tankIndex].dir = "S";
                             this.forceUpdate();
-                        break;
+                        return $.Deferred().resolve().promise();
                         case("E"):
                             this.state.tanks[tankIndex].dir = "N";
                             this.forceUpdate();
-                        break;
+                        return $.Deferred().resolve().promise();
                     }
-                break;
+                return $.Deferred().resolve().promise();
             case("MOVE_FORWARD"):
                 console.log("Moving Forward!");
                     switch(this.state.tanks[tankIndex].dir){
                       case("S"):
-                        this.state.tanks[tankIndex].coord.y+=1;
-                        this.forceUpdate();
-                      break;
+                        var animationFinishPromise = this.animateMoveSouth(tankIndex);
+                        return animationFinishPromise.then(function(timing){
+                            this.state.tanks[tankIndex].coord.y+=1;
+                            this.forceUpdate();
+                            return timing
+                        }.bind(this));
                       case("N"):
-                        this.state.tanks[tankIndex].coord.y-=1;
-                        this.forceUpdate();
-                      break
+                        var animationFinishPromise = this.animateMoveNorth(tankIndex);
+                        return animationFinishPromise.then(function(timing){
+                            this.state.tanks[tankIndex].coord.y-=1;
+                            this.forceUpdate();
+                            return timing;
+                        }.bind(this));
                       case("W"):
-                        this.state.tanks[tankIndex].coord.x-=1;
-                        this.forceUpdate();
-                      break;
+                        var animationFinishPromise = this.animateMoveWest(tankIndex);
+                        return animationFinishPromise.then(function(timing){
+                            this.state.tanks[tankIndex].coord.x-=1;
+                            this.forceUpdate();
+                            return timing;
+                        }.bind(this));
                       case("E"):
-                        this.state.tanks[tankIndex].coord.x+=1;
-                        this.forceUpdate();
-                      break;
+                        var animationFinishPromise = this.animateMoveEast(tankIndex);
+                        return animationFinishPromise.then(function(timing){
+                            this.state.tanks[tankIndex].coord.x+=1;
+                            this.forceUpdate();
+                            return timing;
+                        }.bind(this));
                   }
-                break;
+                return $.Deferred().resolve().promise();
             case("MOVE_BACKWARD"):
                 console.log("Moving Backward");
                     switch(this.state.tanks[tankIndex].dir){
                         case("S"):
-                            this.state.tanks[tankIndex].coord.y-=1;
-                            this.forceUpdate();
-                        break;
+                            var animationFinishPromise = this.animateMoveNorth(tankIndex);
+                            return animationFinishPromise.then(function(timing){
+                                this.state.tanks[tankIndex].coord.y-=1;
+                                this.forceUpdate();
+                                return timing;
+                            }.bind(this));
                         case("N"):
-                            this.state.tanks[tankIndex].coord.y+=1;
-                            this.forceUpdate();
-                        break
+                            var animationFinishPromise = this.animateMoveSouth(tankIndex);
+                            return animationFinishPromise.then(function(timing){
+                                this.state.tanks[tankIndex].coord.y+=1;
+                                this.forceUpdate();
+                                return timing
+                            }.bind(this));
                         case("W"):
-                            this.state.tanks[tankIndex].coord.x+=1;
-                            this.forceUpdate();
-                        break;
+                            var animationFinishPromise = this.animateMoveEast(tankIndex);
+                            return animationFinishPromise.then(function(timing){
+                                this.state.tanks[tankIndex].coord.x+=1;
+                                this.forceUpdate();
+                                return timing;
+                            }.bind(this));
                         case("E"):
-                            this.state.tanks[tankIndex].coord.x-=1;
-                            this.forceUpdate();
-                        break;
+                            var animationFinishPromise = this.animateMoveWest(tankIndex);
+                            return animationFinishPromise.then(function(timing){
+                                this.state.tanks[tankIndex].coord.x-=1;
+                                this.forceUpdate();
+                                return timing;
+                            }.bind(this));
                     }
-                break;
+                return $.Deferred().resolve().promise();
             case("DIE"):
                 console.log("Dying");
                 console.log("Tank", tankIndex, "died.");
@@ -248,7 +286,11 @@ var WatchGame = React.createClass({
                 }
                 this.state.tanks[tankIndex].visible = false;
                 this.forceUpdate();
-                break;
+                return $.Deferred().resolve().promise();
+            default:
+                console.log("Move not recognized:", move);
+                // Skip the waiting time for the turn by pretending the animation took the whole turn length
+                return $.Deferred().resolve(TURN_LENGTH).promise();
         }
      },
 
@@ -286,23 +328,72 @@ var WatchGame = React.createClass({
         var move = moveObj[tankIndex];
 
         // Have the specific tank make a move
-        this.tankMove(move, tankIndex);
+        var animationsDone = this.tankMove(move, tankIndex);
+        console.log("Have animations done promise");
 
-        console.log(this.state.tanksLeft);
-        
-        // Display the winner if there is one
-        if (this.state.tanksLeft <= 1 && !this.props.loginPage){
-            this.DisplayWinner();
-            return;
-        }
+        // After the animations finish...
+        animationsDone.then(function(animation_duration_this_turn) {
+            console.log("animation duration this turn:", animation_duration_this_turn);
 
-        // Increment the move to the next move
-        moveIndex++;
-        // Set the next move to take place after TURN_LENGTH milliseconds
-        setTimeout(function(){
-            this.makeMove(moveIndex);
-        }.bind(this),this.state.TURN_LENGTH);
+            // Error Check
+            if (animation_duration_this_turn === undefined) {
+                animation_duration_this_turn = 0;
+            }
+            console.log(this.state.tanksLeft);
+            
+            // Display the winner if there is one
+            if (this.state.tanksLeft <= 1 && !this.props.loginPage){
+                this.DisplayWinner();
+                return;
+            }
+
+            // Increment the move to the next move
+            moveIndex++;
+            // Set the next move to take place after TURN_LENGTH milliseconds
+            setTimeout(function(){
+                this.makeMove(moveIndex);
+            }.bind(this),TURN_LENGTH - animation_duration_this_turn);
+        }.bind(this));
      },
+
+     // Animations --------------------
+     animateMoveNorth: function(tankId) {
+        var selector = "img[class*='" + tankId + "']";
+        var elements = $(selector);
+        var styling = {'top': Number(elements.css('top').replace('px', '')) - gridSize + 'px'};
+        return this.animateStyle(elements, styling);
+     },
+     animateMoveEast: function(tankId) {
+        var selector = "img[class*='" + tankId + "']";
+        var elements = $(selector);
+        var styling = {'left': Number(elements.css('left').replace('px', '')) + gridSize + 'px'};
+        return this.animateStyle(elements, styling);
+     },
+     animateMoveSouth: function(tankId) {
+        var selector = "img[class*='" + tankId + "']";
+        var elements = $(selector);
+        var styling = {'top': Number(elements.css('top').replace('px', '')) + gridSize + 'px'};
+        return this.animateStyle(elements, styling);
+     },
+     animateMoveWest: function(tankId) {
+        var selector = "img[class*='" + tankId + "']";
+        var elements = $(selector);
+        var styling = {'left': Number(elements.css('left').replace('px', '')) - gridSize + 'px'};
+        return this.animateStyle(elements, styling);
+     },
+     // Helper function, returns promise that resolves when it finishes
+     animateStyle: function(elements, styling) {
+        var animationFinishPromise = $.Deferred();
+        console.log("old style:", elements.css('top'), elements.css('left'));
+        console.log("new style:", styling);
+        elements.animate(styling, ANIMATION_LENGTH, "swing", function() {
+            animationFinishPromise.resolve(ANIMATION_LENGTH, elements);
+            elements.removeAttr('style');
+        });
+        return animationFinishPromise;
+     },
+     // End of Animation code -------
+
      componentDidMount: function() {
         console.log(this.props.location.pathname);
        var pathname = this.props.location.pathname;
@@ -378,7 +469,12 @@ var WatchGame = React.createClass({
                                             if (cell) {
                                                 image_url = cell;
                                             }
-                                            return (<td><img height="65" width="65" src={image_url} /></td>);
+                                            // Use one image as a placeholder to keep the grid size the same
+                                            // and the other as the display image
+                                            return (<td className="gameGrid">
+                                                    <img className={"placeholder "} height={gridSize} width={gridSize} src={image_url} />
+                                                    <img className={"display " + "tank_" + image_url} src={image_url} />
+                                                </td>);
                                         })}
                                     </tr>);
                             })}

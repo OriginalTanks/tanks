@@ -57,8 +57,7 @@ public class Game {
     private PriorityQueue<Tank> tankQueue;
     
     //this is where to get the error codes from
-    private String compFailureResponse = "";
-    private String runFailureResponse = "";
+    private List<String> compErrs = new ArrayList<String>();
     
     //this is the passphrase used to prevent the user from updating their own wins, coordinates, or dir
     private String statsPassword = "poekillsKylo33#d@rn";
@@ -141,12 +140,18 @@ public class Game {
                             break;
                     }
                     moves.addMove(t.getAlias(), move);
+                    moves.addErr("");
                 } catch (Exception e) {
                     // Send the output of e to the user for debugging
-                	System.err.format("Runtime error");
-                	this.setRunFailureResponse(e.getMessage());
-                	e.printStackTrace();
-                	
+                    String tName = t.getTankName();
+                    String eCls = e.getClass().toString().substring(6);
+                    String eMsg = e.getMessage();
+                    String eStk = e.getStackTrace()[0].toString();
+                    String eErr = eCls + (eMsg == null ? "" : (": " + eMsg)) + "\n\tat " + eStk;
+                    String rErr = "Runtime error!\nTank: " + tName + ", Turn: " + currentTurn + "\n" + eErr;
+                    moves.addErr(rErr);
+                    System.err.println(rErr);
+
                     moves.addMove(t.getAlias(), TANK_MOVES.WAIT);
                 }
             //}
@@ -294,7 +299,9 @@ public class Game {
 
                 // Add a move for the dying tank
                 this.moves.addMove(((Tank) elem).getAlias(), TANK_MOVES.DIE);
+                this.moves.addErr("");
                 this.moves.newTurn();
+                currentTurn += 1;
 
                 // Give credit for the kill
                 for (User user : users) {
@@ -413,24 +420,13 @@ public class Game {
         this.status = status;
     }
 
-	public String getCompFailureResponse() {
-		return compFailureResponse;
+	public List<String> getCompErrs() {
+		return compErrs;
 	}
 
-	public void setCompFailureResponse(String compFailureResponse) {
-		if(this.compFailureResponse.equals(""))
-			this.compFailureResponse = compFailureResponse;
+	public void addCompErr(String compErr) {
+		compErrs.add(compErr);
 	}
-
-	public String getRunFailureResponse() {
-		return runFailureResponse;
-	}
-
-	public void setRunFailureResponse(String runFailureResponse) {
-		if(this.runFailureResponse.equals(""))
-			this.runFailureResponse = runFailureResponse;
-	}
-    
     
 }
 

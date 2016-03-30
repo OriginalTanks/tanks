@@ -29,8 +29,8 @@ var Test = require('./test.js');
 var App = React.createClass({
   render: function() {
       var navBarStyle = {
-          backgroundColor: '#262626',
-          borderColor: '#262626'
+          backgroundColor: '#444444',
+          borderColor: '#444444'
       };
 
       var fontStyle = {
