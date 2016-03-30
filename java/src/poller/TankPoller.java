@@ -51,7 +51,7 @@ public class TankPoller implements Runnable{
         for(DBUser user: users){
             for(DBTank tank: user.getTanks()){
                 if(tank.getStatus() == DBTank.COMPILE_STATUS.UNCOMPILED || tank.getStatus() == null){
-                    if(TankCodeLoader.loadTank(tank.getId(),"c" + TankPoller.num,null).getTankName() != null) {
+                    if(TankCodeLoader.loadTank(tank.getId(),"c" + TankPoller.num,null) != null) {
                         tank.setStatus(DBTank.COMPILE_STATUS.SUCCESS);
                         System.out.println("Successful");
                     }else{
