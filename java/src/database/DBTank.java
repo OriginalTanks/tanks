@@ -26,6 +26,7 @@ public class DBTank {
     private int deaths;
     private int wins;
     private List<LogItem> errors;
+    private String error_message;
 
 
     public ObjectId getId() {
@@ -56,6 +57,15 @@ public class DBTank {
 
     public void setStatus(COMPILE_STATUS status){
         this.compile_status = status;
+    }
+
+
+    public String getError_message() {
+        return error_message;
+    }
+
+    public void setError_message(String error_message) {
+        this.error_message = error_message;
     }
 
     public enum COMPILE_STATUS{
