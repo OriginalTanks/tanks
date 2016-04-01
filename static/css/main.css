@@ -339,6 +339,7 @@ CSS For the PlayerPanel Class
 **************************************************************************/
 .centerpiece h1 {
     text-align:center;
+    color: #E1E1E1;
 }
 
 .centerPanel {
