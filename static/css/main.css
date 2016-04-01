@@ -527,11 +527,11 @@ CSS For the Scrollbar
 
 
 body::-webkit-scrollbar{
-	width:16px;
+	width:5px;
 	margin:0;
 }
 body::-webkit-scrollbar-thumb{
-    background-color: transparent;
+    background-color: #262626;
 	border-radius:10px;
 }
 body::-webkit-scrollbar-thumb:hover{
