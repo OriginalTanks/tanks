@@ -97,17 +97,19 @@ public class TankCodeLoader {
             // 3) Remove all imports that aren't whitelisted
             if (containsUnapprovedImports(code)) {
                 String cErr = "Compilation error!\nTank: " + name + "\n" + ERR_BAD_IMPORTS;
-                game.addCompErr(cErr);
                 System.err.println(cErr);
-                return null;
+                Tank t = new TankImpl();
+                t.setError_message(cErr);
+                return t;
             }
             
             // 4) Remove calls that can create threads
             if (containsThreadAndRunnableCalls(code)) {
                 String cErr = "Compilation error!\nTank: " + name + "\n" + ERR_THREADS_RUNNABLE;
-                game.addCompErr(cErr);
                 System.err.println(cErr);
-                return null;
+                Tank t = new TankImpl();
+                t.setError_message(cErr);
+                return t;
             }
 
             // 5) Remove java.lang included functionality
@@ -115,9 +117,10 @@ public class TankCodeLoader {
             //    and SecurityManager (could potentially brick our running program)
             if (containsOtherJavaLangProblems(code)) {
                 String cErr = "Compilation error!\nTank: " + name + "\n" + ERR_OTHERS;
-                game.addCompErr(cErr);
                 System.err.println(cErr);
-                return null;
+                Tank t = new TankImpl();
+                t.setError_message(cErr);
+                return t;
             }
 
             // 6) Take the code out
@@ -170,25 +173,32 @@ public class TankCodeLoader {
                     Tank t = (Tank) ctor.newInstance(tankId, "My Tank");
                     return t;
                 } catch (Exception e) {
-                    String cErr = "Compilation error! Reflection failed\nTank: " + name + "\n" + e.getMessage();
-                    game.addCompErr(cErr);
+                    String eCls = e.getClass().toString().substring(6);
+                    String eMsg = e.getMessage();
+                    String eStk = e.getStackTrace()[0].toString();
+                    String eErr = eCls + (eMsg == null ? "" : (": " + eMsg)) + "\n\tat " + eStk;
+                    String cErr = "Compilation error! Reflection failed\nTank: " + name + "\n" + eErr;
                     System.err.println(cErr);
                     Tank t = new TankImpl();
-                    t.setError_message(e.getMessage());
+                    t.setError_message(cErr);
                     return t;
                 }
             } else {
                 String cErr = "Compilation error!\nTank: " + name;
                 System.err.println(cErr);
                 Tank t = new TankImpl();
-                t.setError_message("Compilation error");
+                t.setError_message(cErr);
                 return t;
             }
         } catch (Exception e) {
-            String cErr = "Compilation error!\nTank: " + name + "\n" + e.getMessage();
+            String eCls = e.getClass().toString().substring(6);
+            String eMsg = e.getMessage();
+            String eStk = e.getStackTrace()[0].toString();
+            String eErr = eCls + (eMsg == null ? "" : (": " + eMsg)) + "\n\tat " + eStk;
+            String cErr = "Compilation error!\nTank: " + name + "\n" + eErr;
             System.err.println(cErr);
             Tank t = new TankImpl();
-            t.setError_message(e.getMessage());
+            t.setError_message(cErr);
             return t;
         }
     }

@@ -56,9 +56,6 @@ public class Game {
     @Transient
     private PriorityQueue<Tank> tankQueue;
     
-    //this is where to get the error codes from
-    private List<String> compErrs = new ArrayList<String>();
-    
     //this is the passphrase used to prevent the user from updating their own wins, coordinates, or dir
     private String statsPassword = "poekillsKylo33#d@rn";
 
@@ -420,14 +417,6 @@ public class Game {
         this.status = status;
     }
 
-	public List<String> getCompErrs() {
-		return compErrs;
-	}
-
-	public void addCompErr(String compErr) {
-		compErrs.add(compErr);
-	}
-    
 }
 
 
