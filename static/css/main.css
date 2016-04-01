@@ -93,7 +93,10 @@ CSS For the TankCard Class
     /*height: 8em;*/
     background-color: #595656;
     box-shadow: 1px 1px 1px #000000;
-    margin: 10px 0;
+    /*margin: 10px 0;*/
+    /*border-radius: 3px;*/
+    margin: 13px 3px;
+    padding: 10px;
 }
 
 .tankCard.card-selected {
@@ -107,11 +110,16 @@ CSS For the TankCard Class
     color: #E1E1E1;
 }
 
+.tankCard .tank-info.tank-info-btm {
+    height: 5em;
+}
+
 .tankCard .tank-stats {
     height: 100%;
     color: #E1E1E1;
     display: flex;
     justify-content: space-around;
+    align-items: center;
 }
 
 .tankCard .tank-info .tank-image {
@@ -164,7 +172,7 @@ CSS For the TankCard Class
 .tankCard.card-selected .edit-btn {
     height: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: flex-end;
 }
 
@@ -365,7 +373,7 @@ CSS For the Watch Games
     padding:0 15px;
     overflow-y:auto;
 
-    
+
 }
 
 .textStuff {

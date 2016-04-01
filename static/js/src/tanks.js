@@ -142,7 +142,7 @@ var TankCard = React.createClass({
                         <h4>{this.props.tank.name}</h4>
                         </div>
                         <div className="col-md-1" onClick={this.props.deleteTank}>
-                        <i className="fa fa-times-circle-o x-btn"></i>
+                        <i className="fa fa-times-circle-o fa-lg x-btn"></i>
                         </div>
                     </div>
                     <div className="col-md-12 tank-info tank-info-btm">
