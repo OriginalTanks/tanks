@@ -25,16 +25,26 @@ var UploadEditor = React.createClass({
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/java");
         editor.setValue(
-            "\nimport game.board.elements.Tank;" +
-            "\nimport game.util.TANK_DIR;" +
-            "\nimport game.util.TANK_MOVES;" +
-            "\nimport org.bson.types.ObjectId;" +
-            "\nimport org.mongodb.morphia.annotations.Embedded;" +
-            "\nimport java.util.List;" +
-            "\n\n@Embedded\npublic class YourTank extends Tank {\n\tpublic YourTank() {\n\t}\n\n\tpublic YourTank(ObjectId tankID, String tankName, int health) {\n\t\tsuper(tankID, tankName, health);" +
-            "\n\t}\n\n\t@Override\n\tpublic TANK_MOVES calculateTurn(List<Tank> tanks, int size) {\n\t\tif (this.getDir() != TANK_DIR.E) {\n\t\t\treturn TANK_MOVES.TURN_RIGHT;" +
-            "\n\t\t}\n\t\telse {\n\t\t\treturn TANK_MOVES.SHOOT;" +
-            "\n\t\t}\n\t}\n}"
+        "\nimport game.board.elements.BasicTank;" +
+		"\nimport game.board.elements.Tank;" +
+		"\nimport game.util.TANK_DIR;" +
+		"\nimport game.util.TANK_MOVES;" +
+		"\nimport org.bson.types.ObjectId;" +
+		"\nimport org.mongodb.morphia.annotations.Embedded;" +
+		"\nimport org.mongodb.morphia.annotations.Transient;" +
+		"\nimport java.util.List;" +
+
+		"\n@Embedded" +
+		"\npublic class MyTank extends BasicTank{" +
+		"\n	public MyTank(ObjectId tankID, String tankName){" +
+		"\n		super(tankID, tankName);" +
+		"\n	}" +
+
+		"\n	public TANK_MOVES calculateTurn(List<Tank> tanks, int size){" +
+		"\n		//code here" +
+		"\n		return TANK_MOVES.WAIT;" +
+		"\n	}" +
+		"\n}"
         );
     },
     getEditor: function(e) {
@@ -131,16 +141,26 @@ var Armory = React.createClass({
     },
     createTank: function() {
         var self = this;
-        var initCode = "\nimport game.board.elements.Tank;" +
-                        "\nimport game.util.TANK_DIR;" +
-                        "\nimport game.util.TANK_MOVES;" +
-                        "\nimport org.bson.types.ObjectId;" +
-                        "\nimport org.mongodb.morphia.annotations.Embedded;" +
-                        "\nimport java.util.List;" +
-                        "\n\n@Embedded\npublic class YourTank extends Tank {\n\tpublic YourTank() {\n\t}\n\n\tpublic YourTank(ObjectId tankID, String tankName, int health) {\n\t\tsuper(tankID, tankName, health);" +
-                        "\n\t}\n\n\t@Override\n\tpublic TANK_MOVES calculateTurn(List<Tank> tanks, int size) {\n\t\tif (this.getDir() != TANK_DIR.E) {\n\t\t\treturn TANK_MOVES.TURN_RIGHT;" +
-                        "\n\t\t}\n\t\telse {\n\t\t\treturn TANK_MOVES.SHOOT;" +
-                        "\n\t\t}\n\t}\n}";
+        var initCode = "\nimport game.board.elements.BasicTank;" +
+		"\nimport game.board.elements.Tank;" +
+		"\nimport game.util.TANK_DIR;" +
+		"\nimport game.util.TANK_MOVES;" +
+		"\nimport org.bson.types.ObjectId;" +
+		"\nimport org.mongodb.morphia.annotations.Embedded;" +
+		"\nimport org.mongodb.morphia.annotations.Transient;" +
+		"\nimport java.util.List;" +
+
+		"\n@Embedded" +
+		"\n\npublic class MyTank extends BasicTank{" +
+		"\n	public MyTank(ObjectId tankID, String tankName){" +
+		"\n		super(tankID, tankName);" +
+		"\n	}" +
+
+		"\n	public TANK_MOVES calculateTurn(List<Tank> tanks, int size){" +
+		"\n		//code here" +
+		"\n		return TANK_MOVES.WAIT;" +
+		"\n	}" +
+		"\n}";
         var newTank = {
             name: "New Tank",
             code: initCode,
