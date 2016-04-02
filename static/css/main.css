@@ -394,7 +394,7 @@ CSS For the Dark Background
 .tankPanel {
     height:auto;
     max-height:80vh !important;
-    padding:0 15px;
+    padding:0 5px;
     overflow-y:auto;
 }
 
