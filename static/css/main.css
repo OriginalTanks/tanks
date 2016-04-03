@@ -325,13 +325,7 @@ CSS For the GameCard Class
 /**************************************************************************
 CSS For the Game Page
 **************************************************************************/
-.gameButtons {
-    margin-bottom:15px;
-}
 
-.gameButtons .button {
-        box-shadow: 3px 3px 3px black;
-}
 
 
 /**************************************************************************
@@ -438,6 +432,8 @@ CSS For the Armory
 }
 
 .flex-games {
+    display:flex;
+    flex-direction:column;
     height: 94vh;
 }
 
