@@ -480,6 +480,21 @@ CSS For the Armory
     width: 75%;
 }
 
+#save-alert {
+    position: absolute;
+    z-index: 999;
+    margin: 1em 34em 0;
+    width: 20em;
+    text-align: center;
+}
+
+.fade {
+    opacity: 0;
+    -webkit-transition: opacity 300ms linear;
+    -o-transition: opacity 300ms linear;
+    transition: opacity 300ms linear;
+}
+
 .editor-box{
     height: 80vh;
     width: 100%;

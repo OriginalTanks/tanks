@@ -62,6 +62,9 @@ var Editor = React.createClass({
         else if(self.tankCode == undefined){
             alert("Looks like there was a problem uploading your file. Try uploading it again.");
         }
+        else if(self.tankCode == self.props.selectedTank.code) {
+            // alert("No changes detected.");
+        }
         else{
             var route, reqType;
             if(!self.props.selectedTank._id){
@@ -83,6 +86,7 @@ var Editor = React.createClass({
                     code: self.tankCode
                 }),
                 success: function(data) {
+                    $('#save-alert').addClass('in');
                     self.setState({
                         name: self.tankName,
                         code: self.tankCode
@@ -98,15 +102,18 @@ var Editor = React.createClass({
             });
         }
     },
+    closeAlert: function() {
+        $('#save-alert').removeClass('in');
+    },
     render: function() {
         return (
             <div>
-                <div className="row">
-                    <div className="col-md-12 editor-box">
-                        <div className="input-group editor-box" ref="editor" onBlur={this.saveTank}>
-                        </div>
-                    </div>
+                <div className="alert alert-success fade" id="save-alert" role="alert">
+                    <button type="button" className="close" onClick={this.closeAlert}><span aria-hidden="true">&times;</span></button>
+                    Tank saved successfully!
                 </div>
+                <div className="input-group editor-box" ref="editor" onBlur={this.saveTank}></div>
+
             </div>
         )
     }
