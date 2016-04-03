@@ -393,7 +393,6 @@ CSS For the Dark Background
 **************************************************************************/
 .tankPanel {
     height:auto;
-    max-height:80vh !important;
     padding:0 5px;
     overflow-y:auto;
 }
@@ -436,6 +435,10 @@ CSS For the Armory
     display:flex;
     flex-direction:column;
     height: 80vh;
+}
+
+.flex-games {
+    height: 94vh;
 }
 
 .editorStyle {

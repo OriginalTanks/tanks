@@ -175,7 +175,7 @@ var Games = React.createClass({
         return (
             <div>
             	<div className="row">
-				 	<div className="col-md-3 armory-top flex">
+				 	<div className="col-md-3 armory-top flex-games">
                         <button type="submit" className="btn btn-primary button">Prebuilt Tanks</button>
 				 		<div className="tankPanel dark-background">
 				        	<TankList
@@ -191,7 +191,7 @@ var Games = React.createClass({
 				 		<CenterPiece game={this.currGame}/>
 				 	</div>
 
-				 	<div className="col-md-3  armory-top flex">
+				 	<div className="col-md-3  armory-top flex-games">
                         <div className="horizontal gameButtons">
                             <button type="submit" className="btn btn-primary button" onClick={this.toggleGames}>{this.gamesButton}</button>
                             {this.show_open ? null : <button type="submit" onClick={this.watchGame} className="btn btn-primary button">Battle!</button>}
