@@ -1,3 +1,4 @@
+/* global ace*/
 var Auth = require('./authentication.js');
 
 var Placeholder = React.createClass({
@@ -11,7 +12,7 @@ var Placeholder = React.createClass({
             textShadow: '1px 4px 6px #BDBCBC, 0 0 0 #000, 1px 4px 6px #BDBCBC',
             borderRadius: '5px',
             height: '80vh',
-            lineHeight: '8em'
+            lineHeight: '80vh'
         }
         return (
             <div style={style}>
@@ -22,6 +23,9 @@ var Placeholder = React.createClass({
 });
 
 var Editor = React.createClass({
+    propTypes: {
+      selectedTank: React.PropTypes.object  
+    },
     getInitialState: function() {
         return {
             name: this.props.selectedTank.name,
@@ -103,16 +107,12 @@ var Editor = React.createClass({
         };
         return (
             <div>
-                <form onSubmit={this.saveTank}>
-                    <input ref="tankName" type="text" className="form-control" onChange={this.handleChange} value={this.state.name}/>
-                    <button type="submit" className="btn btn-primary btn-block">Save</button>
-                    <div className="row">
-                        <div className="col-md-12 editor-box">
-                            <div className="input-group" ref="editor" style={editorStyle}>
-                            </div>
+                <div className="row">
+                    <div className="col-md-12 editor-box">
+                        <div className="input-group" ref="editor" onBlur={this.saveTank} style={editorStyle}>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         )
     }

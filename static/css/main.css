@@ -99,6 +99,18 @@ CSS For the TankCard Class
     padding: 10px;
 }
 
+.tankCard input {
+    color: black;
+    border: 0;
+    background: 0;
+    padding: 0 7px;
+} 
+
+.tankCard input:focus {
+    border-radius: 5px;
+    background: #C9C9C9;
+}
+
 .tankCard.card-selected {
     margin: 10px 0;
     background-color: #7A7777;
@@ -156,6 +168,31 @@ CSS For the TankCard Class
 
 .tankCard .edit-btn button {
     font-size: 1em;
+}
+
+.edit-btn .btn-download {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right-color: white;
+}
+
+.edit-btn .btn-upload {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: white;
+    overflow: hidden;
+    position: relative;
+}
+
+.edit-btn .btn-upload input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    opacity: 0;
+    cursor: inherit;
+    display: block;
 }
 
 /*.edit-btn {
@@ -413,18 +450,29 @@ body {
 /**************************************************************************
 CSS For the Armory
 **************************************************************************/
-.armory-top {
+.armory-main {
+    background-color: #262626;
+    padding: 1em 0;
+}
+
+.armory-left {
+    padding: 0 1em;
+}
+
+/*.armory-top {
     padding-left: 0px;
     padding-right: 0px;
     height: 80vh;
     background-color: #262626;
-}
+}*/
 
 .armory-top .tankPanel {
     flex-grow:2;
-    overflowY:auto;
-    overflowX:hidden;
     background-color:#262626;
+}
+
+.armory-top .btn-create {
+    margin: 0 1.1em 1em;
 }
 
 .editor-box{
