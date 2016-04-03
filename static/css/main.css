@@ -451,6 +451,20 @@ CSS For the Armory
 
 .armory-left {
     padding: 0 1em;
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    align-items: center;
+}
+
+.armory-left .btn-create {
+    margin: 0 1.1em 1em;
+    height: 3em;    
+    width: 50%;
+}
+
+.armory-left .tankCard:first-child {
+    margin: 0;
 }
 
 /*.armory-top {
@@ -467,18 +481,20 @@ CSS For the Armory
 
 .armory-top .btn-create {
     margin: 0 1.1em 1em;
+    width: 75%;
 }
 
 .editor-box{
-    padding-left: 15px;
-    padding-right: 15px;
+    height: 880vh;
+    width: 100%;
+    border-radius: 5px;
 }
 
-.flex {
+/*.flex {
     display:flex;
     flex-direction:column;
     height: 80vh;
-}
+}*/
 
 .flex-games {
     display:flex;

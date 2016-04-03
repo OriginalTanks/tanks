@@ -99,17 +99,11 @@ var Editor = React.createClass({
         }
     },
     render: function() {
-        var editorStyle =  {
-            height: '74vh',
-            width: '100%',
-            marginTop: '15px',
-            borderRadius: '5px'
-        };
         return (
             <div>
                 <div className="row">
                     <div className="col-md-12 editor-box">
-                        <div className="input-group" ref="editor" onBlur={this.saveTank} style={editorStyle}>
+                        <div className="input-group editor-box" ref="editor" onBlur={this.saveTank}>
                         </div>
                     </div>
                 </div>
