@@ -104,7 +104,7 @@ var Editor = React.createClass({
         return (
             <div>
                 <form onSubmit={this.saveTank}>
-                    <div className="row">
+                    <div className="row-editor">
                         <div className="col-md-9">
                             <div className="input-group">
                                 <span className="input-group-addon">Name</span>

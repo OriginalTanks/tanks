@@ -499,6 +499,9 @@ CSS For the Armory
 .row {
     margin-right: 0px;
     margin-left: 0px;
+}
+
+.row-editor {
     margin-top: 5px;
     margin-bottom: 5px;
 }
