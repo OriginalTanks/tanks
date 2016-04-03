@@ -96,16 +96,27 @@ var Editor = React.createClass({
     },
     render: function() {
         var editorStyle =  {
-            height: '80vh',
+            height: '74vh',
             width: '100%',
-            margin: '0px 0',
+            marginTop: '5px',
             borderRadius: '5px'
         };
         return (
             <div>
                 <form onSubmit={this.saveTank}>
-                    <input ref="tankName" type="text" className="form-control" onChange={this.handleChange} value={this.state.name}/>
-                    <button type="submit" className="btn btn-primary btn-block">Save</button>
+                    <div className="row">
+                        <div className="col-md-9">
+                            <div className="input-group">
+                                <span className="input-group-addon">Name</span>
+                                <input ref="tankName" type="text" className="form-control" onChange={this.handleChange} value={this.state.name}/>
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <div className="input-group blue btn-block">
+                                <input type="button" className="btn btn-primary btn-block" onClick={this.saveTank} value="Save tank" />
+                            </div>
+                        </div>
+                    </div>
                     <div className="row">
                         <div className="col-md-12 editor-box">
                             <div className="input-group" ref="editor" style={editorStyle}>

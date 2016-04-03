@@ -428,8 +428,8 @@ CSS For the Armory
 }
 
 .editor-box{
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .flex {
@@ -499,6 +499,8 @@ CSS For the Armory
 .row {
     margin-right: 0px;
     margin-left: 0px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 div.mainContent {
