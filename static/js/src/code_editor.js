@@ -87,6 +87,7 @@ var Editor = React.createClass({
                 }),
                 success: function(data) {
                     $('#save-alert').addClass('in');
+                    window.setTimeout(self.closeAlert, 3000);
                     self.setState({
                         name: self.tankName,
                         code: self.tankCode
