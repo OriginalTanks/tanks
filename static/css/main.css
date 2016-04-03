@@ -301,12 +301,10 @@ td.gameGrid img.display {
     z-index: 100;
 }
 
-/*
- * Make Lasers go under the tanks
+/* Make Lasers go over the tanks */
 td.gameGrid img.display[src*=Laser] {
-    z-index: 99;
+    z-index: 110;
 }
-*/
 
 
 /**************************************************************************
@@ -405,8 +403,6 @@ CSS For the Watch Games
     max-height:700px !important;
     padding:0 15px;
     overflow-y:auto;
-
-
 }
 
 .textStuff {
