@@ -100,9 +100,9 @@ var Editor = React.createClass({
     },
     render: function() {
         var editorStyle =  {
-            height: '80vh',
+            height: '74vh',
             width: '100%',
-            margin: '0px 0',
+            marginTop: '15px',
             borderRadius: '5px'
         };
         return (

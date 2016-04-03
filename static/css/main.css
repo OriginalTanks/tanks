@@ -249,6 +249,7 @@ CSS For the TankCard Class
 
     /*width:100%;*/
     margin:5px;
+    padding: 8px;
     box-shadow: 1px 1px 1px #000000;
     background-color:#800000 !important;
     border-color:#800000 !important;
@@ -362,13 +363,7 @@ CSS For the GameCard Class
 /**************************************************************************
 CSS For the Game Page
 **************************************************************************/
-.gameButtons {
-    margin-bottom:15px;
-}
 
-.gameButtons .button {
-        box-shadow: 3px 3px 3px black;
-}
 
 
 /**************************************************************************
@@ -430,8 +425,7 @@ CSS For the Dark Background
 **************************************************************************/
 .tankPanel {
     height:auto;
-    max-height:80vh !important;
-    padding:0 15px;
+    padding:0 5px;
     overflow-y:auto;
 }
 
@@ -476,14 +470,20 @@ CSS For the Armory
 }
 
 .editor-box{
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .flex {
     display:flex;
     flex-direction:column;
     height: 80vh;
+}
+
+.flex-games {
+    display:flex;
+    flex-direction:column;
+    height: 94vh;
 }
 
 .editorStyle {
@@ -547,6 +547,11 @@ CSS For the Armory
 .row {
     margin-right: 0px;
     margin-left: 0px;
+}
+
+.row-editor {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 div.mainContent {
