@@ -3,8 +3,8 @@ var Auth = require('./authentication.js')
 var boardWidth = 30; // (x)
 var boardHeight = 30; // (y)
 var gridSize = 21; // Size of a grid space (px)
-var ANIMATION_LENGTH = 100; // How long animations take
-var TURN_LENGTH = 100;
+var ANIMATION_LENGTH = 400; // How long animations take
+var TURN_LENGTH = 500;
 
 var WatchGame = React.createClass({
     getInitialState: function() {
@@ -20,7 +20,6 @@ var WatchGame = React.createClass({
             ],
             game: {},
             tanksLeft: 4,
-            lasers: [],
         };
     },
     getWinner: function()
@@ -85,24 +84,23 @@ var WatchGame = React.createClass({
         var tempLasers = [];
         switch(this.state.tanks[tankNo].dir){
             case("S"):
-                for(var y = this.state.tanks[tankNo].coord.y+2; y < boardHeight; y++){
-                    if(!this.hasTank(this.state.tanks[tankNo].coord.x,y) &&
-                        !this.hasTank(this.state.tanks[tankNo].coord.x-1,y) &&
-                        !this.hasTank(this.state.tanks[tankNo].coord.x+1,y)){
-                        tempLasers.push({"y" : true, "coord": {"x": this.state.tanks[tankNo].coord.x,"y": y}});
-                    }
-                    else{
-                        //we could add something about getting hit here.
+                var x = this.state.tanks[tankNo].coord.x;
+                var min_y = this.state.tanks[tankNo].coord.y+2;
+                for(var y = min_y; y < boardHeight-1; y++){
+                    if(!this.hasTank(x,y) &&
+                        !this.hasTank(x-1,y) &&
+                        !this.hasTank(x+1,y)){
+                        // No tanks here, show the laser
+                        tempLasers.push({"y" : true, "coord": {"x": x,"y": y}});
+                    } else {
+                        // Hit a tank, show an explosion
                         break;
                     }
-                    this.setState({lasers: tempLasers});
-                    setTimeout(function(){
-                        this.setState({lasers: []})
-                        }.bind(this),TURN_LENGTH-50);
                 }
+                return this.animateLasers(tempLasers);
             break;
             case("W"):
-                for(var x = this.state.tanks[tankNo].coord.x-2; x >= 0; x--){
+                for(var x = this.state.tanks[tankNo].coord.x-2; x >= 0+1; x--){
                     if(!this.hasTank(x,this.state.tanks[tankNo].coord.y) &&
                         !this.hasTank(x,this.state.tanks[tankNo].coord.y-1) &&
                         !this.hasTank(x,this.state.tanks[tankNo].coord.y+1)){
@@ -112,14 +110,11 @@ var WatchGame = React.createClass({
                         //we could add something about getting hit here.
                         break;
                     }
-                    this.setState({lasers: tempLasers});
-                    setTimeout(function(){
-                            this.setState({lasers: []})
-                         }.bind(this),TURN_LENGTH-50);
                 }
+                return this.animateLasers(tempLasers);
             break;
             case("N"):
-                for(var y = this.state.tanks[tankNo].coord.y-2; y >= 0; y--){
+                for(var y = this.state.tanks[tankNo].coord.y-2; y >= 0+1; y--){
                     if(!this.hasTank(this.state.tanks[tankNo].coord.x,y) &&
                         !this.hasTank(this.state.tanks[tankNo].coord.x-1,y) &&
                         !this.hasTank(this.state.tanks[tankNo].coord.x+1,y)){
@@ -130,29 +125,21 @@ var WatchGame = React.createClass({
 
                         break;
                     }
-                    this.setState({lasers: tempLasers});
-                    setTimeout(function(){
-                            this.setState({lasers: []})
-                         }.bind(this),TURN_LENGTH-50);
                 }
+                return this.animateLasers(tempLasers);
             break;
             case("E"):
-                for(var x = this.state.tanks[tankNo].coord.x+2; x < boardWidth; x++){
+                for(var x = this.state.tanks[tankNo].coord.x+2; x < boardWidth-1; x++){
                     if(!this.hasTank(x,this.state.tanks[tankNo].coord.y) &&
                         !this.hasTank(x,this.state.tanks[tankNo].coord.y-1) &&
                         !this.hasTank(x,this.state.tanks[tankNo].coord.y+1)){
                         tempLasers.push({"x" : true, "coord": {"x": x,"y": this.state.tanks[tankNo].coord.y}});
-                    }
-                    else{
+                    } else {
                         //we could add something about getting hit here.
-
                         break;
                     }
                 }
-                this.setState({lasers: tempLasers});
-                setTimeout(function(){
-                            this.setState({lasers: []})
-                         }.bind(this),TURN_LENGTH-50);
+                return this.animateLasers(tempLasers);
             break;
         }
     },
@@ -168,8 +155,7 @@ var WatchGame = React.createClass({
         switch(move){
             case("SHOOT"):
                 console.log("Shooting");
-                this.fire(tankIndex);
-                return $.Deferred().resolve().promise();
+                return this.fire(tankIndex);
             case("TURN_RIGHT"):
                 console.log("Turning right!");
                   switch(this.state.tanks[tankIndex].dir){
@@ -392,6 +378,35 @@ var WatchGame = React.createClass({
         });
         return animationFinishPromise;
      },
+     // Animate lasers
+     animateLasers: function(lasers) {
+        var animationFinishPromise = $.Deferred();
+        var affectedElements = []
+
+        lasers.forEach(function(laser) {
+            var image_url = "Blank.png";
+            if(laser.y){
+                image_url = "LaserUpDown.gif";
+            } else if (laser.x){
+                image_url = "LaserEastWest.gif";
+            }
+            image_url = '/images/'+image_url;
+
+            var gridSelector = "[data-grid-x='" + laser.coord.x + "'][data-grid-y='" + laser.coord.y + "']";
+            var imgSelector = "img[class*='display']";
+            var elem = $(gridSelector).find(imgSelector);
+            elem.attr('src', image_url)
+            affectedElements.push(elem);
+        });
+
+        setTimeout(function(){
+            affectedElements.forEach(function(elem) {
+                elem.attr('src', '/images/Blank.png');
+            });
+            animationFinishPromise.resolve(ANIMATION_LENGTH);
+        }, ANIMATION_LENGTH);
+        return animationFinishPromise;
+     },
      // End of Animation code -------
 
      componentDidMount: function() {
@@ -420,26 +435,21 @@ var WatchGame = React.createClass({
         var board = new Array(boardHeight);
         for (var y=0; y < boardHeight; y++) {
             board[y] = new Array(boardHeight);
-        }
-        // Initialize the board to undefined
-        board.forEach(function(ar) {
-            for (var i = 0; i < boardWidth; i++) {
-                ar[i] = "a";
-                ar[i] = undefined;
+            for (var x = 0; x < boardWidth; x++) {
+                board[y][x] = {
+                    type: 'blank',
+                    image_url: "/images/Blank.png",
+                    coord: {x: x, y: y}
+                };
             }
-        });
+        }
+        // Board Elements: object or undefined
+        // {
+        //     type: "blank", "tank" or "laser",
+        //     image_url: "/images/etc/image.png",
+        //     coord: {x: #, y: #}
+        // }
 
-        this.state.lasers.forEach(function(laser)
-        {
-           var image_url = "Blank.png";
-           if(laser.y){
-               image_url = "LaserUpDown.gif";
-           } else if (laser.x){
-               image_url = "LaserEastWest.gif";
-           }
-           image_url = '/images/'+image_url;
-           board[laser.coord.y][laser.coord.x] = image_url
-        });
 
         this.state.tanks.forEach(function(tank) {
             var image_url = "NorthS.png";
@@ -454,7 +464,13 @@ var WatchGame = React.createClass({
             }
             image_url = '/images/'+tank.index +'/' + image_url;
             if (tank.visible){
-                board[tank.coord.y][tank.coord.x] = image_url;}
+                board[tank.coord.y][tank.coord.x] = {
+                    type: 'tank',
+                    image_url: image_url,
+                    coord: tank.coord,
+                    tank_index: tank.index
+                };
+            }
         });
         return (
             <div className = "wrapper">
@@ -464,16 +480,19 @@ var WatchGame = React.createClass({
                             {board.map(function (row) {
                                 return (
                                     <tr>
-                                        {row.map(function (cell) {
-                                            var image_url = "/images/Blank.png";
-                                            if (cell) {
-                                                image_url = cell;
+                                        {row.map(function (elem) {
+                                            var image_url = elem.image_url;
+                                            var classes = "display";
+
+                                            if (elem && elem.type === 'tank') {
+                                                classes = classes + " tank_" + elem.tank_index;
                                             }
+
                                             // Use one image as a placeholder to keep the grid size the same
                                             // and the other as the display image
-                                            return (<td className="gameGrid">
-                                                    <img className={"placeholder "} height={gridSize} width={gridSize} src={image_url} />
-                                                    <img className={"display " + "tank_" + image_url} src={image_url} />
+                                            return (<td className="gameGrid" data-grid-x={elem.coord.x} data-grid-y={elem.coord.y}>
+                                                    <img className="placeholder" height={gridSize} width={gridSize} src="/images/Blank.png" />
+                                                    <img className={classes} src={image_url} />
                                                 </td>);
                                         })}
                                     </tr>);

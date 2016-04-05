@@ -99,6 +99,18 @@ CSS For the TankCard Class
     padding: 10px;
 }
 
+.tankCard input {
+    color: black;
+    border: 0;
+    background: 0;
+    padding: 0 7px;
+} 
+
+.tankCard input:focus {
+    border-radius: 5px;
+    background: #C9C9C9;
+}
+
 .tankCard.card-selected {
     margin: 10px 0;
     background-color: #7A7777;
@@ -158,6 +170,31 @@ CSS For the TankCard Class
     font-size: 1em;
 }
 
+.edit-btn .btn-download {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right-color: white;
+}
+
+.edit-btn .btn-upload {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: white;
+    overflow: hidden;
+    position: relative;
+}
+
+.edit-btn .btn-upload input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    opacity: 0;
+    cursor: inherit;
+    display: block;
+}
+
 /*.edit-btn {
     height: 100%;
     align-items: flex-end;
@@ -212,6 +249,7 @@ CSS For the TankCard Class
 
     /*width:100%;*/
     margin:5px;
+    padding: 8px;
     box-shadow: 1px 1px 1px #000000;
     background-color:#800000 !important;
     border-color:#800000 !important;
@@ -263,12 +301,10 @@ td.gameGrid img.display {
     z-index: 100;
 }
 
-/*
- * Make Lasers go under the tanks
+/* Make Lasers go over the tanks */
 td.gameGrid img.display[src*=Laser] {
-    z-index: 99;
+    z-index: 110;
 }
-*/
 
 
 /**************************************************************************
@@ -325,13 +361,7 @@ CSS For the GameCard Class
 /**************************************************************************
 CSS For the Game Page
 **************************************************************************/
-.gameButtons {
-    margin-bottom:15px;
-}
 
-.gameButtons .button {
-        box-shadow: 3px 3px 3px black;
-}
 
 
 /**************************************************************************
@@ -339,6 +369,7 @@ CSS For the PlayerPanel Class
 **************************************************************************/
 .centerpiece h1 {
     text-align:center;
+    color: #E1E1E1;
 }
 
 .centerPanel {
@@ -372,8 +403,6 @@ CSS For the Watch Games
     max-height:700px !important;
     padding:0 15px;
     overflow-y:auto;
-
-
 }
 
 .textStuff {
@@ -392,8 +421,7 @@ CSS For the Dark Background
 **************************************************************************/
 .tankPanel {
     height:auto;
-    max-height:80vh !important;
-    padding:0 15px;
+    padding:0 5px;
     overflow-y:auto;
 }
 
@@ -412,29 +440,77 @@ body {
 /**************************************************************************
 CSS For the Armory
 **************************************************************************/
-.armory-top {
+.armory-main {
+    background-color: #262626;
+    padding: 1em 0;
+}
+
+.armory-left {
+    padding: 0 1em;
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    align-items: center;
+}
+
+.armory-left .btn-create {
+    margin: 0 1.1em 1em;
+    height: 3em;    
+    width: 50%;
+}
+
+.armory-left .tankCard:first-child {
+    margin: 0;
+}
+
+/*.armory-top {
     padding-left: 0px;
     padding-right: 0px;
     height: 80vh;
     background-color: #262626;
-}
+}*/
 
 .armory-top .tankPanel {
     flex-grow:2;
-    overflowY:auto;
-    overflowX:hidden;
     background-color:#262626;
 }
 
-.editor-box{
-    padding-left: 0px;
-    padding-right: 0px;
+.armory-top .btn-create {
+    margin: 0 1.1em 1em;
+    width: 75%;
 }
 
-.flex {
+#save-alert {
+    position: absolute;
+    z-index: 999;
+    margin: 1em 34em 0;
+    width: 20em;
+    text-align: center;
+}
+
+.fade {
+    opacity: 0;
+    -webkit-transition: opacity 300ms linear;
+    -o-transition: opacity 300ms linear;
+    transition: opacity 300ms linear;
+}
+
+.editor-box{
+    height: 80vh;
+    width: 100%;
+    border-radius: 5px;
+}
+
+/*.flex {
     display:flex;
     flex-direction:column;
     height: 80vh;
+}*/
+
+.flex-games {
+    display:flex;
+    flex-direction:column;
+    height: 94vh;
 }
 
 .editorStyle {
@@ -500,6 +576,11 @@ CSS For the Armory
     margin-left: 0px;
 }
 
+.row-editor {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 div.mainContent {
     margin: 0px;
 }
@@ -527,11 +608,11 @@ CSS For the Scrollbar
 
 
 body::-webkit-scrollbar{
-	width:16px;
+	width:5px;
 	margin:0;
 }
 body::-webkit-scrollbar-thumb{
-    background-color: transparent;
+    background-color: #262626;
 	border-radius:10px;
 }
 body::-webkit-scrollbar-thumb:hover{

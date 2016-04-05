@@ -80,10 +80,10 @@ var DisplayTank = React.createClass({
                   <div className="accordion-inner">
                     <div className="input-group blue">
                         <input type="submit"
-                        className="accordion-toggle btn btn-primary"
-                        onClick={this.props.onDeleteTank.bind(null, this.props.tank._id)}
-                        data-toggle="collapse" data-parent={"#" + this.props.accordionId}
-                        href={"#" + collapseId} value="Delete Tank"
+                            className="accordion-toggle btn btn-primary"
+                            onClick={this.props.onDeleteTank.bind(null, this.props.tank._id)}
+                            data-toggle="collapse" data-parent={"#" + this.props.accordionId}
+                            href={"#" + collapseId} value="Delete Tank"
                         />
                     </div>
                   </div>
@@ -96,7 +96,8 @@ var TankCard = React.createClass({
 
     getInitialState: function() {
         return {
-            isSelected: false
+            isSelected: false,
+            name: this.props.tank.name
         }
     },
     componentWillReceiveProps: function(nextProps) {
@@ -119,6 +120,39 @@ var TankCard = React.createClass({
 
         return name;
     },
+    handleNameChange: function(ev) {
+        console.log(ev.target.value);
+
+                
+        this.setState({name: ev.target.value});
+    },
+    saveTankName: function() {
+        var self = this;
+        
+        $.ajax({
+            url: '/api/users/' + Auth.getUsername() + '/tanks/' + self.props.tank._id,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                name: self.state.name
+                // code: self.props.tank.tank_code
+            }),
+            success: function(data) {
+                self.setState({
+                    name: self.state.name
+                    // code: self.props.tank.tank_code
+                });
+                // self.props.update(data);
+                // console.log(data);
+                // ace.edit(this.refs.editor).setValue(nextProps.selectedTank.code);
+
+                // self.props.history.pushState(null, '/user/' + Auth.getUsername());
+            },
+            error: function(xhr, status, err) {
+                console.log(err);
+            }
+        });
+    },
     render: function() {
 
         var cardStyle = {
@@ -139,7 +173,7 @@ var TankCard = React.createClass({
             <div className={cardClass} key={this.props.tank._id} onClick={this.handleSelect}>
                     <div className="col-md-12 tank-info tank-info-top">
                         <div className="col-md-11">
-                        <h4>{this.props.tank.name}</h4>
+                        <input type="text" value={this.state.name} onBlur={this.saveTankName} onChange={this.handleNameChange}></input>
                         </div>
                         <div className="col-md-1" onClick={this.props.deleteTank}>
                         <i className="fa fa-times-circle-o fa-lg x-btn"></i>
@@ -155,11 +189,11 @@ var TankCard = React.createClass({
                             <span>K: 32</span>
                         </div>
                         <div className="col-md-4 edit-btn">
-                            <button className="btn btn-primary">
-                                <i className="download-btn fa fa-download"></i>
+                            <button className="btn btn-primary btn-download">
+                                <i className="fa fa-download"></i>
                             </button>
-                            <span className="btn btn-primary btn-file">
-                                <i className="upload-btn fa fa-upload"></i>
+                            <span className="btn btn-primary btn-upload">
+                                <i className="fa fa-upload"></i>
                                 <input type="file" ref="tankFile" onChange={this.props.uploadFile} name="tankFile" id="tankFile" accept="java/*"  />
                             </span>
                         </div>
@@ -202,6 +236,7 @@ var TankList = React.createClass({
                             onSelectTank={self.handleSelectTank}
                             deleteTank={self.props.deleteTank}
                             uploadFile={self.props.uploadFile}
+                            update={self.props.update}
                           />
                 })}
             </div>

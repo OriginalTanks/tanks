@@ -1,3 +1,4 @@
+/* global ace*/
 var Auth = require('./authentication.js');
 
 var Placeholder = React.createClass({
@@ -11,7 +12,7 @@ var Placeholder = React.createClass({
             textShadow: '1px 4px 6px #BDBCBC, 0 0 0 #000, 1px 4px 6px #BDBCBC',
             borderRadius: '5px',
             height: '80vh',
-            lineHeight: '8em'
+            lineHeight: '80vh'
         }
         return (
             <div style={style}>
@@ -22,6 +23,9 @@ var Placeholder = React.createClass({
 });
 
 var Editor = React.createClass({
+    propTypes: {
+      selectedTank: React.PropTypes.object  
+    },
     getInitialState: function() {
         return {
             name: this.props.selectedTank.name,
@@ -58,6 +62,9 @@ var Editor = React.createClass({
         else if(self.tankCode == undefined){
             alert("Looks like there was a problem uploading your file. Try uploading it again.");
         }
+        else if(self.tankCode == self.props.selectedTank.code) {
+            // alert("No changes detected.");
+        }
         else{
             var route, reqType;
             if(!self.props.selectedTank._id){
@@ -79,6 +86,8 @@ var Editor = React.createClass({
                     code: self.tankCode
                 }),
                 success: function(data) {
+                    $('#save-alert').addClass('in');
+                    window.setTimeout(self.closeAlert, 3000);
                     self.setState({
                         name: self.tankName,
                         code: self.tankCode
@@ -94,25 +103,18 @@ var Editor = React.createClass({
             });
         }
     },
+    closeAlert: function() {
+        $('#save-alert').removeClass('in');
+    },
     render: function() {
-        var editorStyle =  {
-            height: '80vh',
-            width: '100%',
-            margin: '0px 0',
-            borderRadius: '5px'
-        };
         return (
             <div>
-                <form onSubmit={this.saveTank}>
-                    <input ref="tankName" type="text" className="form-control" onChange={this.handleChange} value={this.state.name}/>
-                    <button type="submit" className="btn btn-primary btn-block">Save</button>
-                    <div className="row">
-                        <div className="col-md-12 editor-box">
-                            <div className="input-group" ref="editor" style={editorStyle}>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <div className="alert alert-success fade" id="save-alert" role="alert">
+                    <button type="button" className="close" onClick={this.closeAlert}><span aria-hidden="true">&times;</span></button>
+                    Tank saved successfully!
+                </div>
+                <div className="input-group editor-box" ref="editor" onBlur={this.saveTank}></div>
+
             </div>
         )
     }

@@ -268,15 +268,12 @@ var Armory = React.createClass({
     render: function() {
         var user_tanks = this.props.tanks;
         var editTank = this.editTank;
-        var editorWrapperStyle = {
-            height: '45em'
-        };
         console.log("Render Armory")
         return (
             <div>
-                <div className="row">
-                    <div className="col-md-3 armory-top flex">
-                        <button type="submit" className="btn btn-primary button" onClick={this.createTank}>Create New Tank</button>
+                <div className="row armory-main">
+                    <div className="col-md-3 armory-left">
+                        <button type="submit" className="btn btn-primary button btn-create" onClick={this.createTank}>Create New Tank</button>
                         <div className="tankPanel dark-background ">
                             <TankList
                                 tanks={this.state.user.tanks}
@@ -284,11 +281,12 @@ var Armory = React.createClass({
                                 onSelectTank={this.handleSelectTank}
                                 deleteTank={this.deleteTank}
                                 uploadFile={this.uploadFile}
+                                update={this.updateList}
                             />
                         </div>
                     </div>
-                    <div className="col-md-9 armory-top flex">
-                        <div style={editorWrapperStyle}>
+                    <div className="col-md-9 armory-right">
+                        <div>
                             {this.state.selectedTank ?
                                 <Editor.View
                                     selectedTank={this.state.selectedTank}
@@ -299,8 +297,8 @@ var Armory = React.createClass({
                         </div>
                     </div>
                 </div>
-                <div className="compiler-output dark-background white">
-                    Compiler Output
+                <div className="row compiler-output dark-background white">
+                    <h2>Compiler Output</h2>
                 </div>
             </div>
         );
