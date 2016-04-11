@@ -11,13 +11,13 @@ import java.util.List;
  * Created by ndavis on 11/13/15.
  */
 @Embedded
-public class TankImpl extends Tank {
+public class TankImpl extends BasicTank {
 
     public TankImpl() {
     }
 
-    public TankImpl(ObjectId tankID, String tankName, int health) {
-        super(tankID, tankName, health);
+    public TankImpl(ObjectId tankID, String tankName) {
+        super(tankID, tankName);
     }
 
     @Override

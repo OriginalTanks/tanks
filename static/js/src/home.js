@@ -1,38 +1,44 @@
 var Login = require('./login.js');
-var Register = require('./register.js');
+var WatchGame = require('./watch_game.js');
 
 var Home = React.createClass({
+  getInitialState: function() {
+        console.log("In initial state");
+        return {
+            game: null,
+        };
+    },
+    componentDidMount: function() {
+        $.get('/api/games/', function(result) {
+            for(var i=0;i<result.length;i++){
+              if(result[i].status==1){
+                  this.setState({game: result[i]});
+                break;
+              }
+            }
+        }.bind(this));
+  },
 	getStarted: function (e) {
-                      e.preventDefault();
-                      console.log(e)
-                      $.ajax({
-                          success: function(data) {
-                              this.props.history.pushState(null, '/get_started');
-                          }.bind(this),
-                          error: function(xhr, status, err) {
-                                 }.bind(this)
-                      });
-                  },
+        e.preventDefault();
+        console.log(e)
+        $.ajax({
+            success: function(data) {
+                this.props.history.pushState(null, '/get_started');
+            }.bind(this),
+            error: function(xhr, status, err) {
+                   }.bind(this)
+        });
+    },
     render: function() {
+        var path = {};
+        if(this.state.game){
+          console.log(this.state.game);
+          path.pathname = '/games/' + this.state.game._id + '/watch';
+        }
         return (
-            <div className="row">
-                <div className="col-md-6">
-                    <h1>Home</h1>
-                    <p>Welcome to our online tank arena! On this website you will be able to upload and battle 
-                        tanks that you have programmed against other users. Using our interface, you will be 
-                        able to code up a tank of your very own in no time. For more information on how to get started,
-                        click the link below.
-                    </p>
-                    <form onClick={this.getStarted}>
-                        <div className="input-group">
-                            <input type="submit" className="btn btn-primary" value="Get Started" />
-                        </div>
-                    </form>
-                    <Login history={this.props.history} />
-                </div>
-                <div className="col-md-6">
-                    <img className="home-screen-shot" src="/images/screenshot1.png" />
-                </div>
+            <div>
+                <Login history={this.props.history}/>
+                {this.state.game!=null ? <WatchGame location={path} loginPage={true}/> : null }
             </div>
             );
     }

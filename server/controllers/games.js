@@ -56,14 +56,21 @@ exports.add = function (req, res) {
 exports.addTank = function (req, res) {
     var gameid = req.params.gameid;
     Games.findById(gameid, function(err, game) {
-        game.tankIds.push(req.body.tankId);
+        var tank = req.body.tank;
+        if (tank === undefined) {
+            error = "Tank is undefined when trying to add to game";
+            console.log(error);
+            return res.status(400).send(error);
+        }
+        console.log(tank);
+        game.tankIds.push(tank._id);
         if (game.tankIds.length >= 4) {
             game.ready = true;
             game.status = 0;
         }
         game.save(function (err) {
             if (err) return console.log(err);
-            return res.sendStatus(202);
+            return res.send(game);
         });
     });
 };

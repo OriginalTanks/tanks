@@ -12,7 +12,7 @@ public class GameProcessor {
 
         game = UserLookup.processGame(game);
         game = TankProcessor.processGame(game);
-        game.setBoard(new SquareBoardImpl(10));
+        game.setBoard(new SquareBoardImpl(30));
         game.createMoveTracker();
         // save the game
         //db.saveGame(game);

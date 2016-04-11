@@ -26,6 +26,8 @@ var SmallTankList = React.createClass({
                     <tbody>
                         {this.state.tanks.map(function(tank) {
                            var key = tank._id;
+                           
+                       	   //test for bad tanks here, store in a new list, if tank does not compile correctly either dont show or indicate a problem
                            return (
                             <tr key={key}>
                                 <td>{tank.name}</td>
@@ -64,7 +66,13 @@ var TankListModal = React.createClass({
             }.bind(this),
             complete: function() {
                 this.hideModal();
-                this.props.callback();
+                console.log("Number of players: " + game.tankIds.length);
+                if(game.tankIds.length == 3){
+                    this.props.takeToGames();
+                }
+                else{
+                    this.props.callback();   
+                }
             }.bind(this)
         });
     },
@@ -135,6 +143,9 @@ var OpenGames = React.createClass({
             games: []
         };
     },
+    takeToGames: function() {
+        this.props.history.pushState(null, '/your_games');
+    },
     loadOpenGamesFromServer: function() {
         if(this.isMounted()){
             $.get('/api/games/open', function (results) {
@@ -150,6 +161,7 @@ var OpenGames = React.createClass({
     },
     showModal: function(modalName, e) {
         if (e) {e.preventDefault();}
+        console.log(modalName);
         $('#' + modalName).modal('show');
     },
     render: function() {
@@ -174,7 +186,7 @@ var OpenGames = React.createClass({
                                     <td >{4 - game.tankIds.length}</td>
                                     <td>
                                         <a href="#" onClick={this.showModal.bind(this, modalName)} >Join</a>
-                                        <TankListModal callback={this.componentDidMount.bind(this)} modalName={modalName} game={game} />
+                                        <TankListModal takeToGames={this.takeToGames} callback={this.componentDidMount.bind(this)} modalName={modalName} game={game} />
                                     </td>
                                 </tr>);
                         }.bind(this))}

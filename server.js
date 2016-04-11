@@ -1,8 +1,8 @@
 // Import the games model
 require('./server/models/users');
 require('./server/models/games');
-
 // setup Express and Routes
+
 var app = require('./server/configs/express');
 
 // setup API

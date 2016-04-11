@@ -23,9 +23,9 @@ var UserSchema = new Schema({
 
 // hash the password
 UserSchema.methods.set_password = function(password) {
-    console.log("encrypting and setting a password hash: ");
-    console.log(password);
-    console.log(SALT);
+    //console.log("encrypting and setting a password hash: ");
+    //console.log(password);
+    //console.log(SALT);
     this.password_hash = bcrypt.hashSync(password, SALT);
 };
 

@@ -22,8 +22,10 @@ exports.add = function(req, res) {
     var username = req.params.username;
     Users.findOne({'username':username}, function(err, user) {
         user.tanks.push(req.body);
+        var toReturn = user.tanks[user.tanks.length-1];
+        console.log("usertank: " + user.tanks);
         user.save(function (err) {
-            if (!err) return res.sendStatus(202);
+            if (!err) return res.send(toReturn);
         });
     });
 };
@@ -31,7 +33,8 @@ exports.add = function(req, res) {
 exports.update = function(req, res) {
     var username = req.params.username;
     var tankid = req.params.tankid;
-    Users.findById(username, function(err, user) {
+    Users.findOne({'username':username}, function(err, user) {
+        if (err) return console.log(err);
         var tank = user.tanks.id(tankid);
 
         Object.keys(req.body).forEach(function(key){
@@ -39,7 +42,7 @@ exports.update = function(req, res) {
         });
 
         user.save(function(err) {
-            if(!err) return res.sendStatus(202);
+            if(!err) return res.send(tank);
             return console.log(err);
         });
     });

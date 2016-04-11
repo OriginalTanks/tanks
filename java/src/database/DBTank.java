@@ -1,7 +1,13 @@
 package database;
 
+import game.util.LogItem;
+import game.util.TANK_SKIN;
+import game.util.TANK_STATUS;
+import game.util.TANK_TYPE;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Id;
+
+import java.util.List;
 
 /**
  * Created by nathand on 11/28/15.
@@ -12,6 +18,16 @@ public class DBTank {
     private ObjectId id;
     private String name;
     private String code;
+    private COMPILE_STATUS compile_status;
+    private TANK_STATUS status;
+    private TANK_TYPE type;
+    private TANK_SKIN skin;
+    private int kills;
+    private int deaths;
+    private int wins;
+    private List<LogItem> errors;
+    private String error_message;
+
 
     public ObjectId getId() {
         return id;
@@ -35,6 +51,25 @@ public class DBTank {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public COMPILE_STATUS getStatus(){ return this.compile_status; }
+
+    public void setStatus(COMPILE_STATUS status){
+        this.compile_status = status;
+    }
+
+
+    public String getError_message() {
+        return error_message;
+    }
+
+    public void setError_message(String error_message) {
+        this.error_message = error_message;
+    }
+
+    public enum COMPILE_STATUS{
+        SUCCESS,FAIL,UNCOMPILED
     }
 
 }

@@ -43,8 +43,8 @@ public class DatabaseTest {
         List<User> u = new ArrayList<>();
         u.add(new User(new ObjectId("1"), "bob", new ObjectId("1"), "destroyer"));
         List<Tank> t = new ArrayList<>();
-        t.add(new TankImpl(new ObjectId("1"), "destroyer", 3));
-        Board board = new SquareBoardImpl(10);
+        t.add(new TankImpl(new ObjectId("1"), "destroyer"));
+        Board board = new SquareBoardImpl(30);
         Game game = new Game(u, t, board);
         game.startGame();
 

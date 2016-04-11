@@ -20,7 +20,7 @@ public class TankProcessor {
         List<Tank> tanks = new ArrayList<>();
         // Look up each tankID and get the user info
         for (ObjectId tankId : tankIds) {
-            tanks.add(TankCodeLoader.loadTank(tankId, "c" + Poller.num.toString()));
+            tanks.add(TankCodeLoader.loadTank(tankId, "c" + Poller.num.toString(), game));
             Poller.num += 1;
         }
 

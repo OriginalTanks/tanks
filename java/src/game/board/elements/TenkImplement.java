@@ -9,10 +9,10 @@ import java.util.List;
 /**
  * Created by Michael on 11/12/2015.
  */
-public class TenkImplement extends Tank {
+public class TenkImplement extends LightTank {
 
-    public TenkImplement(ObjectId tankID, String tankName, int health) {
-        super(tankID, tankName, health);
+    public TenkImplement(ObjectId tankID, String tankName) {
+        super(tankID, tankName);
     }
 
 

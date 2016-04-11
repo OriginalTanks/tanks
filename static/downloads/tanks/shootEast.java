@@ -1,4 +1,6 @@
+import game.board.elements.LightTank;
 import game.board.elements.Tank;
+import game.util.Coordinate;
 import game.util.TANK_DIR;
 import game.util.TANK_MOVES;
 import org.bson.types.ObjectId;
@@ -10,13 +12,13 @@ import java.util.List;
  * Created by ndavis on 11/13/15.
  */
 @Embedded
-public class TankImpl extends Tank {
+public class shootEast extends LightTank {
 
-    public TankImpl() {
+    public shootEast() {
     }
 
-    public TankImpl(ObjectId tankID, String tankName, int health) {
-        super(tankID, tankName, health);
+    public shootEast(ObjectId tankID, String tankName) {
+        super(tankID, tankName);
     }
 
     @Override
@@ -25,5 +27,10 @@ public class TankImpl extends Tank {
             return TANK_MOVES.TURN_RIGHT;
         }
         return TANK_MOVES.SHOOT;
+    }
+
+    @Override
+    public void setCoord(Coordinate coord) {
+        return;
     }
 }

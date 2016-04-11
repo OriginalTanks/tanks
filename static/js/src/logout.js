@@ -9,8 +9,21 @@ var Login = React.createClass({
                   },
     render: function() {
                 return (
-                    <a href="#" onClick={this.handleLogout}>Logout </a>
-                    );
+                      <div className="logout">
+                        <div><img className="userIcon" src="../../images/user_white.png"></img></div>
+                        <div className="userInfo">
+                          <a className="pull-right" href="#" onClick={this.handleLogout}>Logout </a>
+                          <div className="userImage">
+                            <img></img>
+                          </div>
+                          <div className="userStats">
+                            <span>Total Wins:</span><br></br>
+                            <span>Total Kills:</span><br></br>
+                            <span>Total Losses:</span><br></br>
+                          </div>
+                        </div>
+                      </div> 
+                   );
             }
 });
 module.exports = Login;

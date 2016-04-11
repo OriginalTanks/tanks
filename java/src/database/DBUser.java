@@ -18,6 +18,9 @@ public class DBUser {
     private String username;
     private String password_hash;
     private List<DBTank> tanks;
+    private int kills;
+    private int deaths;
+    private int wins;
 
     public DBUser() {}
 

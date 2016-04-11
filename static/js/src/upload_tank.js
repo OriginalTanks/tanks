@@ -18,7 +18,9 @@ var ExampleTanks = React.createClass({
 
 var uploadTank =  function() {
     var self = this;
+    console.log("In upload function");
     self.tankName = this.refs.tankName.value.trim();
+    console.log("After tank name");
     if(self.tankName == "" || self.tankName == undefined){
         alert("Whoops. Looks like you forgot fill out everything.");
     }
@@ -35,7 +37,7 @@ var uploadTank =  function() {
                 code: self.tank_code
             }),
             success: function(data) {
-                self.props.history.pushState(null, '/user/' + Auth.getUsername());
+                self.props.history.pushState(null, '/test');
             },
             error: function(xhr, status, err) {
             }
@@ -68,6 +70,10 @@ var UploadEditor = React.createClass({
         self.tank_code = editor.getValue().trim();
         this.uploadTank();
     },
+    getEditor: function(e) {
+        var editor = ace.edit(this.refs.editor);
+        return editor;
+    },
     uploadTank: uploadTank,
     render: function() {
         var editorStyle =  {
@@ -75,6 +81,8 @@ var UploadEditor = React.createClass({
             width: '600px',
             borderRadius: '5px'
         };
+
+        console.log(this.refs)
 
         return (
             <form onSubmit={this.uploadText}>
@@ -98,12 +106,14 @@ var UploadTank = React.createClass({
         var self = this;
         var reader = new FileReader();
         self.file = e.target.files[0];
+        var editor = this.refs.upload_editor.getEditor();
 
         reader.onload = function(e) {
             var contents = e.target.result;
             self.tank_code = reader.result;
-            var words = code.split(' ');
+            editor.setValue(self.tank_code);
             self.fileLoaded = true;
+
         }
         reader.readAsText(self.file);
     },
@@ -115,13 +125,10 @@ var UploadTank = React.createClass({
                 <div className="col-md-6">
                     <div className="registerUser">
                         <h1>Add tank</h1>
-                        <UploadEditor history={this.props.history}/>
-                        <form onSubmit={this.uploadTank}>
+                        <UploadEditor ref="upload_editor" history={this.props.history}/>
+                        <form>
                             <h3>Upload a java file (optional)</h3>
                             <input ref="tankFile" onChange={this.uploadFile} type="file" name="tank" accept="java/*" />
-                            <div className="input-group blue">
-                                <input type="submit" className="btn btn-primary" value="Add tank!" />
-                            </div>
                         </form>
 
                     </div>
@@ -134,4 +141,4 @@ var UploadTank = React.createClass({
     }
 });
 
-    module.exports = UploadTank;
+module.exports = UploadTank;
